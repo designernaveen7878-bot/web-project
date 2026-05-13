@@ -1,81 +1,685 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lotus Spa - Home</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Metal & Fabrication Works</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header id="header" class="active">
-      <div class="logo dark-logo">Lotus Spa</div>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-      <nav id="nav">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
 
-      <a href="contact.html" class="book-btn">Book Appointment</a>
-    </header>
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <section class="hero">
-      <div class="hero-content">
-        <span>LUXURY SPA EXPERIENCE</span>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
-        <h1>Relax Your Mind & Body</h1>
+  <style>
 
-        <p>Experience complete relaxation with our premium spa therapies.</p>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+      font-family:'Poppins',sans-serif;
+    }
 
-        <div class="hero-buttons">
-          <a href="services.html" class="primary-btn">Explore Services</a>
-          <a href="contact.html" class="secondary-btn">Contact Us</a>
-        </div>
+    body{
+      background:#1e272e;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    :root{
+      --primary:#2C3E50;
+      --silver:#BDC3C7;
+      --accent:#F39C12;
+    }
+
+    /* Glassmorphism */
+    .glass{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Hero Slider */
+    .hero-slide{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transition:1.5s ease-in-out;
+    }
+
+    .hero-slide.active{
+      opacity:1;
+    }
+
+    /* Overlay */
+    .overlay{
+      background:rgba(0,0,0,0.5);
+    }
+
+    /* Category Hover */
+    .category-card{
+      transition:0.4s;
+    }
+
+    .category-card:hover{
+      transform:translateY(-10px) scale(1.03);
+      box-shadow:0 0 30px rgba(243,156,18,0.3);
+    }
+
+    /* Product Card */
+    .product-card img{
+      transition:0.4s;
+    }
+
+    .product-card:hover img{
+      transform:scale(1.1);
+    }
+
+    /* Modal */
+    .modal{
+      visibility:hidden;
+      opacity:0;
+      transition:0.4s;
+    }
+
+    .modal.active{
+      visibility:visible;
+      opacity:1;
+    }
+
+    /* Back To Top */
+    .top-btn{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      background:var(--accent);
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      cursor:pointer;
+      z-index:999;
+      opacity:0;
+      transition:0.4s;
+    }
+
+    .top-btn.show{
+      opacity:1;
+    }
+
+    /* Responsive Menu */
+    .mobile-menu{
+      display:none;
+    }
+
+    @media(max-width:768px){
+
+      .nav-links{
+        position:absolute;
+        top:80px;
+        left:0;
+        width:100%;
+        background:#233140;
+        flex-direction:column;
+        display:none;
+        padding:30px 0;
+      }
+
+      .nav-links.active{
+        display:flex;
+      }
+
+      .mobile-menu{
+        display:block;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="fixed top-0 left-0 w-full z-50 glass">
+
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+
+      <!-- Logo -->
+      <div class="text-2xl font-bold text-orange-400">
+        METAL WORKS
       </div>
-    </section>
 
-    <section>
-      <div class="section-title">
-        <span>WELCOME</span>
-        <h2>Luxury Spa Experience</h2>
+      <!-- Nav -->
+      <ul class="nav-links flex gap-8 text-sm font-medium items-center">
+
+        <li><a href="#home" class="hover:text-orange-400">Home</a></li>
+        <li><a href="#categories" class="hover:text-orange-400">Categories</a></li>
+        <li><a href="#gallery" class="hover:text-orange-400">Gallery</a></li>
+        <li><a href="#contact" class="hover:text-orange-400">Contact</a></li>
+
+        <a href="#contact"
+        class="bg-orange-500 hover:bg-orange-600 px-5 py-3 rounded-full text-white transition">
+          Get Quote
+        </a>
+
+      </ul>
+
+      <!-- Hamburger -->
+      <button id="menuBtn" class="mobile-menu text-3xl">
+        ☰
+      </button>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="relative h-screen overflow-hidden">
+
+    <!-- Slides -->
+    <div class="hero-slide active"
+      style="background-image:url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1400&auto=format&fit=crop');">
+    </div>
+
+    <div class="hero-slide"
+      style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1400&auto=format&fit=crop');">
+    </div>
+
+    <div class="hero-slide"
+      style="background-image:url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1400&auto=format&fit=crop');">
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay absolute inset-0"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 h-full flex items-center justify-center text-center px-6">
+
+      <div class="glass p-10 rounded-3xl max-w-3xl"
+      data-aos="zoom-in">
+
+        <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+          Strength Meets Style
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-300 mb-8">
+          Premium Metal Fabrication Solutions for Gates, Railings,
+          Windows & Designer Steel Work.
+        </p>
+
+        <a href="#gallery"
+        class="bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-full text-white font-semibold transition">
+          Explore Products
+        </a>
+
       </div>
 
-      <div class="about">
-        <div class="about-image">
-          <img
-            src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1200&auto=format&fit=crop"
-          />
-        </div>
+    </div>
 
-        <div class="about-content">
-          <span>PREMIUM SPA</span>
+  </section>
 
-          <h2>Feel Relaxed & Fresh</h2>
+  <!-- CATEGORY SECTION -->
+  <section id="categories" class="py-24 px-6 bg-[#243342]">
 
-          <p>
-            Enjoy premium spa treatments with professional therapists and luxury
-            rooms.
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-5xl font-bold mb-4">
+          Our Categories
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Iron -->
+        <div class="category-card glass rounded-3xl p-10 text-center"
+        data-aos="fade-up">
+
+          <i class="fa-solid fa-industry text-5xl text-orange-400 mb-6"></i>
+
+          <h3 class="text-3xl font-bold mb-4">
+            Iron Works
+          </h3>
+
+          <p class="text-gray-300">
+            Gates, Windows, Grills & Heavy Duty Structures.
           </p>
 
-          <a href="about.html" class="primary-btn">Read More</a>
         </div>
+
+        <!-- Steel -->
+        <div class="category-card glass rounded-3xl p-10 text-center"
+        data-aos="fade-up"
+        data-aos-delay="100">
+
+          <i class="fa-solid fa-stairs text-5xl text-orange-400 mb-6"></i>
+
+          <h3 class="text-3xl font-bold mb-4">
+            Steel Works
+          </h3>
+
+          <p class="text-gray-300">
+            Designer Railings, Stair Handles & Premium Gates.
+          </p>
+
+        </div>
+
+        <!-- Aluminium -->
+        <div class="category-card glass rounded-3xl p-10 text-center"
+        data-aos="fade-up"
+        data-aos-delay="200">
+
+          <i class="fa-solid fa-building text-5xl text-orange-400 mb-6"></i>
+
+          <h3 class="text-3xl font-bold mb-4">
+            Aluminium Work
+          </h3>
+
+          <p class="text-gray-300">
+            Sliding Doors, Partitions & Modern Windows.
+          </p>
+
+        </div>
+
       </div>
-    </section>
 
-    <footer>
-      <p>© 2026 Lotus Spa Center. All Rights Reserved.</p>
-    </footer>
+    </div>
 
-    <script src="script.js"></script>
-  </body>
+  </section>
+
+  <!-- PRODUCT GALLERY -->
+  <section id="gallery" class="py-24 px-6">
+
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16" data-aos="fade-up">
+
+        <h2 class="text-5xl font-bold mb-4">
+          Product Gallery
+        </h2>
+
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Product -->
+        <div class="product-card glass rounded-3xl overflow-hidden cursor-pointer"
+        onclick="openModal(
+          'Designer Steel Gate',
+          'SS 304 Grade',
+          'Powder Coated',
+          '20+ Years',
+          'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop'
+        )">
+
+          <div class="overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop"
+              class="w-full h-[280px] object-cover"
+            />
+          </div>
+
+          <div class="p-6">
+            <h3 class="text-2xl font-bold">
+              Designer Gate
+            </h3>
+          </div>
+
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass rounded-3xl overflow-hidden cursor-pointer"
+        onclick="openModal(
+          'Modern Aluminium Window',
+          'Aluminium Grade A',
+          'Matte Finish',
+          '15+ Years',
+          'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200&auto=format&fit=crop'
+        )">
+
+          <div class="overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200&auto=format&fit=crop"
+              class="w-full h-[280px] object-cover"
+            />
+          </div>
+
+          <div class="p-6">
+            <h3 class="text-2xl font-bold">
+              Aluminium Window
+            </h3>
+          </div>
+
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass rounded-3xl overflow-hidden cursor-pointer"
+        onclick="openModal(
+          'Steel Railing',
+          'SS Premium',
+          'Gloss Finish',
+          '25+ Years',
+          'https://images.unsplash.com/photo-1523419409543-a5e549c1c4c2?q=80&w=1200&auto=format&fit=crop'
+        )">
+
+          <div class="overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1523419409543-a5e549c1c4c2?q=80&w=1200&auto=format&fit=crop"
+              class="w-full h-[280px] object-cover"
+            />
+          </div>
+
+          <div class="p-6">
+            <h3 class="text-2xl font-bold">
+              Steel Railing
+            </h3>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- WHY CHOOSE -->
+  <section class="py-24 px-6 bg-[#243342]">
+
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-16">
+
+        <h2 class="text-5xl font-bold">
+          Why Choose Us
+        </h2>
+
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-8">
+
+        <div class="glass rounded-3xl p-8 text-center"
+        data-aos="fade-up">
+
+          <i class="fa-solid fa-shield text-5xl text-orange-400 mb-5"></i>
+
+          <h3 class="text-2xl font-bold mb-3">
+            Durability
+          </h3>
+
+        </div>
+
+        <div class="glass rounded-3xl p-8 text-center"
+        data-aos="fade-up"
+        data-aos-delay="100">
+
+          <i class="fa-solid fa-tags text-5xl text-orange-400 mb-5"></i>
+
+          <h3 class="text-2xl font-bold mb-3">
+            Best Price
+          </h3>
+
+        </div>
+
+        <div class="glass rounded-3xl p-8 text-center"
+        data-aos="fade-up"
+        data-aos-delay="200">
+
+          <i class="fa-solid fa-hammer text-5xl text-orange-400 mb-5"></i>
+
+          <h3 class="text-2xl font-bold mb-3">
+            Expert Craftsmanship
+          </h3>
+
+        </div>
+
+        <div class="glass rounded-3xl p-8 text-center"
+        data-aos="fade-up"
+        data-aos-delay="300">
+
+          <i class="fa-solid fa-truck text-5xl text-orange-400 mb-5"></i>
+
+          <h3 class="text-2xl font-bold mb-3">
+            Fast Delivery
+          </h3>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="bg-[#111] py-16 px-6">
+
+    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
+
+      <div>
+        <h3 class="text-3xl font-bold text-orange-400 mb-5">
+          Metal Works
+        </h3>
+
+        <p class="text-gray-400">
+          Premium fabrication work with modern designs and strong durability.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-2xl font-bold mb-5">
+          Contact
+        </h3>
+
+        <p class="mb-3 text-gray-400">
+          📞 +91 9876543210
+        </p>
+
+        <p class="mb-3 text-gray-400">
+          📍 Jaipur, Rajasthan
+        </p>
+
+        <a href="https://maps.google.com"
+        target="_blank"
+        class="text-orange-400">
+          View on Map
+        </a>
+      </div>
+
+      <div>
+
+        <h3 class="text-2xl font-bold mb-5">
+          Follow Us
+        </h3>
+
+        <div class="flex gap-5 text-2xl">
+
+          <a href="#" class="hover:text-orange-400">
+            <i class="fab fa-facebook"></i>
+          </a>
+
+          <a href="#" class="hover:text-orange-400">
+            <i class="fab fa-instagram"></i>
+          </a>
+
+          <a href="#" class="hover:text-orange-400">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <!-- MODAL -->
+  <div id="modal"
+  class="modal fixed inset-0 bg-black/70 flex justify-center items-center z-50 px-6">
+
+    <div class="glass max-w-2xl w-full rounded-3xl overflow-hidden relative">
+
+      <button onclick="closeModal()"
+      class="absolute top-5 right-5 text-3xl">
+        ×
+      </button>
+
+      <img id="modalImage"
+      class="w-full h-[300px] object-cover"/>
+
+      <div class="p-8">
+
+        <h2 id="modalTitle"
+        class="text-4xl font-bold mb-6"></h2>
+
+        <div class="space-y-4 text-lg">
+
+          <p>
+            <strong>Material Grade:</strong>
+            <span id="modalGrade"></span>
+          </p>
+
+          <p>
+            <strong>Finish Type:</strong>
+            <span id="modalFinish"></span>
+          </p>
+
+          <p>
+            <strong>Durability:</strong>
+            <span id="modalDurability"></span>
+          </p>
+
+        </div>
+
+        <a href="https://wa.me/919876543210"
+        target="_blank"
+        class="inline-block mt-8 bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-full font-semibold">
+          WhatsApp Inquiry
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BACK TO TOP -->
+  <div class="top-btn" id="topBtn">
+    ↑
+  </div>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+
+    /* AOS */
+    AOS.init({
+      duration:1000,
+      once:true
+    });
+
+    /* MOBILE MENU */
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.querySelector(".nav-links");
+
+    menuBtn.addEventListener("click",()=>{
+      navLinks.classList.toggle("active");
+    });
+
+    /* HERO SLIDER */
+    const slides = document.querySelectorAll(".hero-slide");
+
+    let current = 0;
+
+    setInterval(()=>{
+
+      slides[current].classList.remove("active");
+
+      current = (current + 1) % slides.length;
+
+      slides[current].classList.add("active");
+
+    },5000);
+
+    /* MODAL */
+    const modal = document.getElementById("modal");
+
+    function openModal(title,grade,finish,durability,image){
+
+      modal.classList.add("active");
+
+      document.getElementById("modalTitle").innerText = title;
+      document.getElementById("modalGrade").innerText = grade;
+      document.getElementById("modalFinish").innerText = finish;
+      document.getElementById("modalDurability").innerText = durability;
+      document.getElementById("modalImage").src = image;
+    }
+
+    function closeModal(){
+      modal.classList.remove("active");
+    }
+
+    /* BACK TO TOP */
+    const topBtn = document.getElementById("topBtn");
+
+    window.addEventListener("scroll",()=>{
+
+      if(window.scrollY > 300){
+        topBtn.classList.add("show");
+      }else{
+        topBtn.classList.remove("show");
+      }
+
+    });
+
+    topBtn.addEventListener("click",()=>{
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+    });
+
+    /* GSAP */
+    gsap.from("header",{
+      y:-100,
+      opacity:0,
+      duration:1
+    });
+
+    gsap.from(".hero-slide",{
+      scale:1.2,
+      duration:2
+    });
+
+    /* PARALLAX */
+    window.addEventListener("scroll",()=>{
+
+      const scroll = window.pageYOffset;
+
+      document.querySelector("#home").style.backgroundPositionY =
+      scroll * 0.5 + "px";
+
+    });
+
+  </script>
+
+</body>
 </html>
